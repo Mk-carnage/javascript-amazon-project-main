@@ -1,12 +1,10 @@
 import {cart, removeFromCart, updateDeliveryOption} from '../../data/cart.js';
 import {products, getProduct} from '../../data/products.js';
 import { formatCurrency } from '../Utils/money.js';
-import dayjs from 'https://unpkg.com/dayjs@1.11.10/esm/index.js'; //default export it is used when we need only one function from that file
+import dayjs from 'https://unpkg.com/dayjs@1.11.10/esm/index.js';
 import{deliveryOptions, getDeliveryOption}from'../../data/deliveryoptions.js';
+import { renderPaymentSummary } from './paymentSummary.js';
 
-const today = dayjs();
-const delivaryDate = today.add(7,'days');
-console.log(delivaryDate.format('dddd, MMMM D'));
 
 export function renderOrderSummary(){
 
@@ -110,8 +108,11 @@ export function renderOrderSummary(){
         const productId = link.dataset.productId;
         removeFromCart(productId);
         
+        
         const container = document.querySelector(`.js-cart-item-container-${productId}`);
         container.remove();
+
+        renderPaymentSummary();
       });
     });
   document.querySelectorAll('.js-delivery-option')
@@ -120,6 +121,8 @@ export function renderOrderSummary(){
         const {productId,deliveryOptionId} = element.dataset
         updateDeliveryOption(productId, deliveryOptionId);
         renderOrderSummary();
+
+        renderPaymentSummary();
       });
     });
 }
