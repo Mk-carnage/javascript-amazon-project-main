@@ -1,6 +1,6 @@
 import {cart, removeFromCart} from '../data/cart.js';
 import {products} from '../data/products.js';
-import formatCurrency from './Utils/money.js';
+import { formatCurrency } from './Utils/money.js';
 import dayjs from 'https://unpkg.com/dayjs@1.11.10/esm/index.js'; //default export it is used when we need only one function from that file
 import{deliveryOptions}from'../data/deliveryoptions.js';
 
@@ -21,14 +21,12 @@ cart.forEach((cartItem)=>{
   });
 
 const delieryOptionId = cartItem.deliveryOptionsId;
-
 let deliveryOption;
 deliveryOptions.forEach((option)=>{
   if(option.id === delieryOptionId){
     deliveryOption = option;
   }
 });
-
 const today = dayjs();
 const delivaryDate = today.add(deliveryOption.deliveryDays,'days');
 const dateStrings = delivaryDate.format('dddd, MMMM D');
@@ -81,8 +79,6 @@ let html = '';
     const today = dayjs();
     const delivaryDate = today.add(deliveryOptions.deliveryDays,'days');
     const dateStrings = delivaryDate.format('dddd, MMMM D');
-
-
     const priceString = deliveryOptions.priceCents === 0
       ? 'FREE'
       : `$${formatCurrency(deliveryOptions.priceCents)} -`;
