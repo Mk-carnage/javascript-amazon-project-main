@@ -1,8 +1,8 @@
 import {cart, removeFromCart, updateDeliveryOption} from '../../data/cart.js';
-import {products} from '../../data/products.js';
+import {products, getProduct} from '../../data/products.js';
 import { formatCurrency } from '../Utils/money.js';
 import dayjs from 'https://unpkg.com/dayjs@1.11.10/esm/index.js'; //default export it is used when we need only one function from that file
-import{deliveryOptions}from'../../data/deliveryoptions.js';
+import{deliveryOptions, getDeliveryOption}from'../../data/deliveryoptions.js';
 
 const today = dayjs();
 const delivaryDate = today.add(7,'days');
@@ -14,20 +14,13 @@ export function renderOrderSummary(){
 
   cart.forEach((cartItem)=>{
     const productId = cartItem.productId;
-    let matchingProduct;
-    products.forEach((product)=>{
-      if(product.id === productId){
-        matchingProduct = product;
-      }
-    });
 
-  const delieryOptionId = cartItem.deliveryOptionId;
-  let deliveryOption;
-  deliveryOptions.forEach((option)=>{
-    if(option.id === delieryOptionId){
-      deliveryOption = option;
-    }
-  });
+    const matchingProduct = getProduct(productId);
+
+
+  const deliveryOptionId = cartItem.deliveryOptionId;
+  let deliveryOption = getDeliveryOption(deliveryOptionId);
+  
   const today = dayjs();
   const delivaryDate = today.add(deliveryOption.deliveryDays,'days');
   const dateStrings = delivaryDate.format('dddd, MMMM D');
